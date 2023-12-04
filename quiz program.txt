@@ -1,0 +1,75 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+
+void displayQuestion(int questionNumber, const char *question, const char *options[]) {
+    printf("\nQuestion %d: %s\n", questionNumber, question);
+    
+    for (int i = 0; i < 4; i++) {
+        printf("%c) %s\n", 'A' + i, options[i]);
+    }
+}
+
+int evaluateAnswer(char userAnswer, char correctAnswer) {
+    return (userAnswer == correctAnswer);
+}
+
+int main() {
+    srand(time(NULL));
+
+    const char *questions[] = {
+        "Who is the father of C language?",
+        "Which of the following is not a valid C variable name?",
+        "What is #include <stdio.h>?",
+        " C preprocessors can have compiler specific features"
+    };
+
+    const char *options[][4] = {
+        {"Steve JobsJames","Gosling","Dennis Ritchie","Rasmus Lerdorf"},
+        {"int number;","float rate;","int variable_count;","int $main;"},
+        {"Preprocessor directive","Inclusion directive","File inclusion directive","None of the mentioned"},
+        {"True","False","Depends on the standard","Depends on the platform"}
+    };
+
+    const char correctAnswers[] = {'C', 'D', 'A', 'A'};
+
+    const int numQuestions = sizeof(questions) / sizeof(questions[0]);
+
+    for (int i = 0; i < numQuestions; i++) {
+        
+        displayQuestion(i + 1, questions[i], options[i]);
+
+       
+        time_t startTime = time(NULL);
+        time_t currentTime = startTime;
+        int timeLimit = 60; 
+
+        
+        printf("\nEnter your answer (A/B/C/D): ");
+        char userAnswer;
+        scanf(" %c", &userAnswer);
+
+        
+        currentTime = time(NULL);
+        int timeTaken = (int)difftime(currentTime, startTime);
+
+       
+        if (evaluateAnswer(userAnswer, correctAnswers[i]) && timeTaken <= timeLimit) {
+            printf("Correct!\n");
+        } else {
+            printf("Incorrect Or Time Out \n");
+        }
+
+       
+        printf("Time taken: %d seconds\n", timeTaken);
+
+        
+        printf("\nPress Enter to continue...");
+        getchar(); // Consume the newline character
+        getchar(); // Wait for Enter key
+    }
+
+    printf("\nCONGRATULATION! YOU COMPLETED THE QUIZ\n");
+
+    return 0;
+}
